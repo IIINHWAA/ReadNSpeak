@@ -1,5 +1,5 @@
 # ReadNSpeak
-독후평 웹 어플리케이션 '읽고말해'
+다양한 도서를 탐색하고, 독후감을 통해 나만의 생각을 공유하는 독서 플랫폼 '읽고말해'
 
 ## 위키 페이지
 [🗃️Wiki 바로가기](https://github.com/IIINHWAA/ReadNSpeak/wiki)
