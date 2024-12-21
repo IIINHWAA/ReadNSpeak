@@ -76,7 +76,7 @@ export default function EventBanner() {
                 <img
                   src={img.img_url}
                   alt={img.img_name}
-                  className="w-full h-[400px] rounded-lg"
+                  className="w-full h-[500px] rounded-lg"
                 />
               </a>
             </div>
