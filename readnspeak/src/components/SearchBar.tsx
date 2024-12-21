@@ -30,7 +30,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
     <div className="w-full flex items-center justify-center">
       <input
         type="text"
-        className={`border py-3 pl-4 pr-10 font-bold ${sizeClass} ${shapeClass} ${colorClass} ${shadowClass} focus:outline-none`}
+        className={`border py-3 pl-4 pr-10 font-bold text-gray-500 ${sizeClass} ${shapeClass} ${colorClass} ${shadowClass} focus:outline-none`}
         placeholder="찾고 싶은 도서 이름을 검색해주세요"
       />
       <button type="button" className="absolute right-[28%]">
