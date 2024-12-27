@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+    <script>
+        // 유저 등록 함수
+        function createUser() {
+            // 입력된 사용자 정보 가져오기
+            const username = document.getElementById("username").value;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password_hash").value;
+
+            // API로 전송할 데이터 객체
+            const userData = {
+                username: username,
+                email: email,
+                password_hash: password
+            };
+
+            // HTTP POST 요청을 보내는 코드
+            fetch("http://localhost:8080/api/users", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(userData)
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error("Failed to create user");
+                }
+            })
+            .then(data => {
+                // 성공적으로 유저가 생성되었을 때 처리
+                alert("User created successfully!");
+                console.log(data); // 서버에서 반환한 데이터 (생성된 유저 정보 등)
+            })
+            .catch(error => {
+                // 오류 발생 시 처리
+                alert("Error creating user");
+                console.error(error);
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>User Registration</h1>
+    
+    <!-- 유저 입력 폼 -->
+    <form onsubmit="event.preventDefault(); createUser();">
+        <label for="username">Username:</label>
+        <input type="text" id="username" required><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" required><br><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password_hash" required><br><br>
+
+        <button type="submit">Create User</button>
+    </form>
+</body>
+</html>
