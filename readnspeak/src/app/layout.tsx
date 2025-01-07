@@ -17,7 +17,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <NavBar />
-        <div className="min-w-[750px] md:w-[80%] lg:w-[70%] mx-auto">
+        <div className="min-w-[750px] md:w-[80%] lg:w-[60%] mx-auto">
           {children}
         </div>
       </body>

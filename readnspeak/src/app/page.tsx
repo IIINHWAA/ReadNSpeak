@@ -1,6 +1,7 @@
 'use client'
 
 import Banner from '@/components/Banner'
+import { BookList } from '@/components/BookList'
 import CategoryBtn from '@/components/CategoryBtn'
 import CategoryResults from '@/components/CategoryResult'
 import SearchBar from '@/components/SearchBar'
@@ -32,6 +33,8 @@ export default function Home() {
       </div>
 
       <CategoryBtn categories={categories} />
+
+      <BookList/>
     </div>
   )
 }
