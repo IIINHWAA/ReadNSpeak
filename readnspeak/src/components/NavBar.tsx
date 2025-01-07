@@ -7,6 +7,12 @@ const NavBar = () => {
   const handleHomeBtn = () => {
     router.push(`/`)
   }
+
+  const handleLoginBtn = () => {
+    router.push(`/login-page`)
+  }
+
+
   return (
     <nav className="bg-white  h-20">
       <div className="min-w-[750px] lg:w-[70%]  w-full md:w-[80%] mx-auto flex justify-between items-center h-full">
@@ -17,7 +23,12 @@ const NavBar = () => {
           읽고말해
         </button>
 
-        <span>로그인</span>
+        <button
+          className="text-black"
+          onClick={handleLoginBtn}
+        >
+          로그인
+        </button>
       </div>
     </nav>
   )
