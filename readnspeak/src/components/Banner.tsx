@@ -1,6 +1,6 @@
-'use client'; // 클라이언트 전용 컴포넌트임을 명시
-import React, { useState, useEffect } from 'react';
-import { FaAngleLeft, FaAngleRight } from 'react-icons/fa';
+'use client' // 클라이언트 전용 컴포넌트임을 명시
+import React, { useState, useEffect } from 'react'
+import { FaAngleLeft, FaAngleRight } from 'react-icons/fa'
 
 const carouselImages = [
   {
@@ -25,37 +25,37 @@ const carouselImages = [
     img_name: '이미지3',
     src: '/',
   },
-];
+]
 
 export default function EventBanner() {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0)
 
   // 다음 이미지로 이동
   const handlerNext = () => {
     setCurrentIndex((nextIndex) =>
-      nextIndex === carouselImages.length - 1 ? 0 : nextIndex + 1
-    );
-  };
+      nextIndex === carouselImages.length - 1 ? 0 : nextIndex + 1,
+    )
+  }
 
   // 이전 이미지로 이동
   const handlerPrevious = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? carouselImages.length - 1 : prevIndex - 1
-    );
-  };
+      prevIndex === 0 ? carouselImages.length - 1 : prevIndex - 1,
+    )
+  }
 
   // 자동으로 슬라이드 변경 (3초마다)
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((count) =>
-        count === carouselImages.length - 1 ? 0 : count + 1
-      );
-    }, 3000);
+        count === carouselImages.length - 1 ? 0 : count + 1,
+      )
+    }, 3000)
 
     return () => {
-      clearInterval(interval);
-    };
-  }, []);
+      clearInterval(interval)
+    }
+  }, [])
 
   return (
     <div className="relative w-full mx-auto">
@@ -98,5 +98,5 @@ export default function EventBanner() {
         <FaAngleRight size={30} />
       </button>
     </div>
-  );
+  )
 }
