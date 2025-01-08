@@ -2,10 +2,9 @@
 
 import Banner from '@/components/Banner'
 import { BookList } from '@/components/BookList'
+
 import CategoryBtn from '@/components/CategoryBtn'
-import CategoryResults from '@/components/CategoryResult'
 import SearchBar from '@/components/SearchBar'
-import { useState } from 'react'
 
 export default function Home() {
   //일단 임시로 구현 후 나중에 도서 api 사용 시 수정
@@ -34,7 +33,7 @@ export default function Home() {
 
       <CategoryBtn categories={categories} />
 
-      <BookList/>
+      <BookList />
     </div>
   )
 }
