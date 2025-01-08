@@ -1,7 +1,24 @@
+'use client'
+
 import Banner from '@/components/Banner'
+import { BookList } from '@/components/BookList'
+
+import CategoryBtn from '@/components/CategoryBtn'
 import SearchBar from '@/components/SearchBar'
 
 export default function Home() {
+  //일단 임시로 구현 후 나중에 도서 api 사용 시 수정
+  const categories = [
+    '잡지, 만화',
+    '여행, 취미',
+    '일본 서적',
+    '외국어',
+    '외국 서적',
+    '유아 아동',
+    '중고 학습',
+    '경제, 경영',
+  ]
+
   return (
     <div>
       <Banner />
@@ -13,6 +30,10 @@ export default function Home() {
       <div className="mt-5">
         <SearchBar size="large" shape="rounded-f" color="none" shadow="full" />
       </div>
+
+      <CategoryBtn categories={categories} />
+
+      <BookList />
     </div>
   )
 }
