@@ -1,5 +1,7 @@
+'use client'
 import React from 'react'
 import { FaSearch } from 'react-icons/fa'
+import { useRouter } from 'next/navigation'
 
 interface SearchBarProps {
   size?: 'large'
@@ -14,6 +16,11 @@ const SearchBar: React.FC<SearchBarProps> = ({
   color = 'none',
   shadow = 'full',
 }) => {
+  const router = useRouter()
+  const handleSearchResultBtn = () => {
+    router.push(`/search-results`)
+  }
+
   // 크기 설정: 화면 크기에 따라 60%로 고정
   const sizeClass = size === 'large' ? 'w-[80%] ' : 'w-0'
 
@@ -34,7 +41,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
         placeholder="찾고 싶은 도서 이름을 검색해주세요"
       />
       <button type="button">
-        <FaSearch className="ml-5 h-5 w-5 text-gray-500" />
+        <FaSearch
+          className="ml-5 h-5 w-5 text-gray-500"
+          onClick={handleSearchResultBtn}
+        />
       </button>
     </div>
   )
