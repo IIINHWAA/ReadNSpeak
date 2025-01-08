@@ -1,10 +1,15 @@
 package com.readnspeak.service;
 
+import com.readnspeak.dto.LoginDto;
 import com.readnspeak.dto.UserDto;
 import com.readnspeak.entity.User;
 import com.readnspeak.repository.UserRepository;
+import com.readnspeak.security.JWTUtility;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.ott.GenerateOneTimeTokenFilter;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,10 +17,13 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JWTUtility jwtUtility;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    @Autowired
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JWTUtility jwtUtility) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtUtility = jwtUtility;
     }
 
     public User registerUser(UserDto userDto) {
@@ -32,6 +40,18 @@ public class UserService {
         user.setPassword_hash(encodedPassword);
 
         return userRepository.save(user);
+    }
+    
+    public String login(LoginDto loginDto) {
+        User user = userRepository.findByUsername(loginDto.getUsername())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid username or password"));
+
+        if (!passwordEncoder.matches(loginDto.getPassword(), user.getPassword_hash())) {
+            throw new IllegalArgumentException("Invalid username or password");
+        }
+
+        // JWT 토큰 생성 (예시)
+        return jwtUtility.generateToken(user);
     }
 
     private void validateUser(UserDto userDto) {
