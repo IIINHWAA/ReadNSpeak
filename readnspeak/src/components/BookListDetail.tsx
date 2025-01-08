@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { FaAngleRight, FaAngleLeft } from 'react-icons/fa'
+import Image from 'next/image'
 
 interface Book {
   id: number
@@ -44,7 +45,7 @@ const BookListDetail: React.FC<BookListProps> = ({ title, books }) => {
         <div className="grid grid-cols-4 gap-10 w-full">
           {displayedBooks.map((book) => (
             <div key={book.id} className="flex flex-col items-start">
-              <img
+              <Image
                 src={book.img_url}
                 alt={book.img_name}
                 className="w-full h-auto rounded-md shadow-xl"

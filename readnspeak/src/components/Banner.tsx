@@ -1,6 +1,7 @@
 'use client' // 클라이언트 전용 컴포넌트임을 명시
 import React, { useState, useEffect } from 'react'
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa'
+import Image from 'next/image'
 
 const carouselImages = [
   {
@@ -73,7 +74,7 @@ export default function EventBanner() {
               style={{ flexShrink: 0 }}
             >
               <a href={img.src} className="w-full h-full">
-                <img
+                <Image
                   src={img.img_url}
                   alt={img.img_name}
                   className="w-full h-[500px] rounded-lg"

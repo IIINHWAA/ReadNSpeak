@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { FaStar } from 'react-icons/fa'
+import Image from 'next/image'
 
 // 이 곳에 api 연결해서 책 DB 구현
 const SearchResultBookList = [
@@ -47,7 +48,7 @@ const SearchBookList = () => {
         {SearchResultBookList.map((book) => (
           <div key={book.id} className="flex flex-col">
             <div className="flex flex-row mb-10">
-              <img
+              <Image
                 src={book.img_url}
                 alt={book.img_name}
                 className="w-[20%] h-auto rounded-md shadow-xl"

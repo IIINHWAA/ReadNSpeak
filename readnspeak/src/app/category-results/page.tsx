@@ -1,16 +1,14 @@
 'use client'
 
-import SearchBookList from '@/components/SearchBookList'
-import { useSearchParams } from 'next/navigation'
+import { Suspense } from 'react'
+import CategoryList from './components/CategoryList'
 
 const SearchResultsPage: React.FC = () => {
-  const searchParams = useSearchParams()
-  const category = searchParams.get('category')
-
   return (
     <div>
-      <h1 className="text-2xl font-bold mt-10">📚{category}</h1>
-      <SearchBookList />
+      <Suspense>
+        <CategoryList />
+      </Suspense>
     </div>
   )
 }
