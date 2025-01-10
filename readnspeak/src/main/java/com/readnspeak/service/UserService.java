@@ -1,10 +1,11 @@
 package com.readnspeak.service;
 
-import com.readnspeak.dto.LoginDto;
+import com.readnspeak.JwtUtil.JwtUtility;
 import com.readnspeak.dto.UserDto;
 import com.readnspeak.entity.User;
 import com.readnspeak.repository.UserRepository;
-import com.readnspeak.security.JWTUtility;
+
+import net.bytebuddy.asm.Advice.Exit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,52 +18,58 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JWTUtility jwtUtility;
+    private final JwtUtility jwtUtility;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JWTUtility jwtUtility) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtility jwtUtility) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtility = jwtUtility;
     }
 
     public User registerUser(UserDto userDto) {
-        // 검증
-        validateUser(userDto);
+        // Check if the username already exists
+        if (userRepository.findByUsername(userDto.getUsername()).isPresent()) {
+            throw new IllegalArgumentException("Username already exists");
+        }
 
-        // 비밀번호 해싱
-        String encodedPassword = passwordEncoder.encode(userDto.getPassword());
+        // Create a new User entity
+        User newUser = new User();
+        newUser.setUsername(userDto.getUsername());
+        // Hash the password using BCrypt
+        newUser.setPassword_hash(passwordEncoder.encode(userDto.getPassword()));
+        newUser.setEmail(userDto.getEmail());
 
-        // User 객체 생성 및 저장
-        User user = new User();
-        user.setUsername(userDto.getUsername());
-        user.setEmail(userDto.getEmail());
-        user.setPassword_hash(encodedPassword);
-
-        return userRepository.save(user);
+        // Save the user to the database
+        return userRepository.save(newUser);
     }
-    
-    public String login(LoginDto loginDto) {
-        User user = userRepository.findByUsername(loginDto.getUsername())
+
+    public String authenticateUser(UserDto userDto) {
+        User user = userRepository.findByUsername(userDto.getUsername())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid username or password"));
 
-        if (!passwordEncoder.matches(loginDto.getPassword(), user.getPassword_hash())) {
+        if (passwordEncoder.matches(userDto.getPassword(), user.getPassword_hash())) {
+            // Generate and return JWT token if authentication is successful
+            return jwtUtility.generateToken(user);
+        } else {
             throw new IllegalArgumentException("Invalid username or password");
         }
-
-        // JWT 토큰 생성 (예시)
-        return jwtUtility.generateToken(user);
     }
-
-    private void validateUser(UserDto userDto) {
-        if (userRepository.existsByUsername(userDto.getUsername())) {
-            throw new IllegalArgumentException("Username already exists.");
-        }
-        if (userRepository.existsByEmail(userDto.getEmail())) {
-            throw new IllegalArgumentException("Email already exists.");
-        }
-        if (userDto.getPassword().length() < 8) {
-            throw new IllegalArgumentException("Password must be at least 8 characters long.");
-        }
+    
+    public User updateUserProfile(String username, UserDto userDto) {
+    	
+    	User existinguser = userRepository.findByUsername(username)
+    			.orElseThrow(() -> new IllegalArgumentException(username));
+    	if (userDto.getUsername() != null) {
+    		existinguser.setUsername(userDto.getUsername());
+    	}
+    	if (userDto.getEmail() != null) {
+    		existinguser.setEmail(userDto.getEmail());
+    	}
+    	if (userDto.getPassword() != null) {
+    		existinguser.setPassword_hash(userDto.getPassword());
+    	}
+    	
+    	return userRepository.save(existinguser);
     }
 }
