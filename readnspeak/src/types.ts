@@ -10,4 +10,7 @@ export interface Book {
   language: string;
   page_count: number;
   created_at: string;
+  rating : string;
+  comments : string;
+  description : string;
 }

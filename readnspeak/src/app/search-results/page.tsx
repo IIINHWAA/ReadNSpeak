@@ -20,6 +20,10 @@ const Searchpages = () => {
     book.title.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
+   const handleBookClick = (bookId: number) => {
+    router.push(`/books/${bookId}`)
+  }
+
   const handleSearch = () => {
     if (searchQuery.trim() !== '') {
       router.push(`/search-results?query=${searchQuery}`)
@@ -56,7 +60,7 @@ const Searchpages = () => {
 
         {filteredBooks.length > 0 ? (
           filteredBooks.map((book) => (
-            <div key={book.book_id} className="flex flex-col">
+            <div key={book.book_id} className="flex flex-col" onClick={() => handleBookClick(book.book_id)}>
               <div className="flex flex-row mb-10">
                 <Image
                   src={book.cover_image}
