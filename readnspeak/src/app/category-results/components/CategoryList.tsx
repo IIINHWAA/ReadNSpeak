@@ -1,6 +1,6 @@
 'use client'
 
-import SearchBookList from '@/components/SearchBookList'
+
 import { useSearchParams } from 'next/navigation'
 
 const CategoryList: React.FC = () => {
@@ -10,7 +10,7 @@ const CategoryList: React.FC = () => {
   return (
     <div>
       <h1 className="text-2xl font-bold mt-10">📚{category}</h1>
-      <SearchBookList />
+      <p>아직</p>
     </div>
   )
 }

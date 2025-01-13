@@ -1,13 +1,7 @@
 import React, { useState } from 'react'
 import { FaAngleRight, FaAngleLeft } from 'react-icons/fa'
 import Image from 'next/image'
-
-interface Book {
-  id: number
-  img_url: string
-  img_name: string
-  img_author: string
-}
+import { Book } from '../types'
 
 interface BookListProps {
   title: string
@@ -44,15 +38,18 @@ const BookListDetail: React.FC<BookListProps> = ({ title, books }) => {
 
         <div className="grid grid-cols-4 gap-10 w-full">
           {displayedBooks.map((book) => (
-            <div key={book.id} className="flex flex-col items-start">
+            <div key={book.book_id} className="flex flex-col items-start">
               <Image
-                src={book.img_url}
-                alt={book.img_name}
+                src={book.cover_image} 
+                alt={book.title} 
+                width={1740} 
+                height={1000} 
+                layout="responsive" 
                 className="w-full h-auto rounded-md shadow-xl"
               />
               <div className="mt-2 w-full">
-                <h3 className="font-bold text-lg text-left">{book.img_name}</h3>
-                <p className="text-gray-500 text-left">{book.img_author}</p>
+                <h3 className="font-bold text-lg text-left">{book.title}</h3>
+                <p className="text-gray-500 text-left">{book.author}</p>
               </div>
             </div>
           ))}
