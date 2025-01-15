@@ -9,6 +9,7 @@ interface SearchBarProps {
   shadow?: 'full'
   onChange: React.ChangeEventHandler<HTMLInputElement> 
   value: string 
+  onKeyDown?: React.KeyboardEventHandler<HTMLInputElement>  // onKeyDown prop 추가
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({
@@ -18,9 +19,10 @@ const SearchBar: React.FC<SearchBarProps> = ({
   shadow = 'full',
   value,
   onChange, 
+  onKeyDown,  // onKeyDown 추가
 }) => {
 
-  // 크기 
+  // 크기
   const sizeClass = size === 'large' ? 'w-[80%]' : 'w-0'
 
   // 모양
@@ -38,6 +40,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
         type="text"
         value={value} 
         onChange={onChange}
+        onKeyDown={onKeyDown}  // onKeyDown 이벤트를 input에 전달
         placeholder="찾고 싶은 도서 이름을 검색해주세요"
         className="w-full focus:outline-none"
       />
