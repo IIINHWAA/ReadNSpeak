@@ -28,6 +28,12 @@ export default function Home() {
       router.push(`/search-results?query=${searchQuery}`)
     }
   }
+ 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && searchQuery.trim() !== '') {
+      handleSearch()  
+    }
+  }
 
   return (
     <div>
@@ -46,6 +52,7 @@ export default function Home() {
           shadow="full"
           value={searchQuery}  
           onChange={(e) => setSearchQuery(e.target.value)} 
+          onKeyDown={handleKeyDown}
         />
         <button type="button" className="ml-2" onClick={handleSearch}>
           <FaSearch className="h-5 w-5 text-gray-500" />
