@@ -1,7 +1,9 @@
 package com.readnspeak.JwtUtil;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -11,7 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
-import com.readnspeak.entity.User;
+import com.readnspeak.entity.Users;
 
 import java.security.Key;
 import java.util.Date;
@@ -37,7 +39,7 @@ public class JwtUtility {
     }
     
     // JWT 토큰 생성
-    public String generateToken(User user) {
+    public String generateToken(Users user) {
     	
         return Jwts.builder()
                 .setSubject(String.valueOf(user.getUsername())) // 사용자 ID
@@ -49,7 +51,7 @@ public class JwtUtility {
                 .compact(); // 토큰 생성
     }
 
-    // JWT 토큰에서 사용자 정보(user_id) 추출
+    // JWT 토큰에서 사용자 정보(username) 추출
     public String extractUsername(String token) {
         return extractClaims(token).getSubject();
     }
@@ -58,14 +60,29 @@ public class JwtUtility {
     public boolean isTokenExpired(String token) {
         return extractClaims(token).getExpiration().before(new Date());
     }
+    
+    public String extractRole(String token)	{
+    	return (String) extractClaims(token).get("role");
+    }
 
     // JWT 토큰에서 Claims 추출
-    private Claims extractClaims(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+    public Claims extractClaims(String token) {
+    	if (token == null || token.trim().isEmpty()) {
+    	    throw new IllegalArgumentException("JWT token is null or empty");
+    	}
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (MalformedJwtException e) {
+            throw new IllegalArgumentException("Invalid JWT token format", e);
+        } catch (ExpiredJwtException e) {
+            throw new IllegalArgumentException("JWT token has expired", e);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Unable to parse JWT token", e);
+        }
     }
 
     // JWT 토큰 검증

@@ -2,9 +2,16 @@ package com.readnspeak.controller;
 
 import com.readnspeak.JwtUtil.JwtUtility;
 import com.readnspeak.dto.ResponseDto;
-import com.readnspeak.dto.UserDto;
-import com.readnspeak.entity.User;
+import com.readnspeak.entity.EmailVerificationRequest;
+import com.readnspeak.entity.EmailVerificationToken;
+import com.readnspeak.entity.Users;
+import com.readnspeak.repository.UserRepository;
+import com.readnspeak.service.EmailVerificationService;
 import com.readnspeak.service.UserService;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,35 +23,59 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/users")
 public class UserController {
 
-    
 	private final UserService userService;
-
-    public UserController(UserService userService) {
+	private final EmailVerificationService emailVerificationService;
+	
+	@Autowired
+    public UserController(UserService userService, EmailVerificationService emailVerificationService) {
         this.userService = userService;
+        this.emailVerificationService = emailVerificationService;
     }
+
     
  // Register endpoint
-    @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody UserDto userDto) {
+	@PostMapping("/verify-email")
+    public ResponseEntity<?> registerUser(@RequestBody Users user) {
         try {
-            User newUser = userService.registerUser(userDto);
-            return ResponseEntity.ok(newUser);  // Return the created user object
+            // 1. 이메일 인증 코드 보내기
+            emailVerificationService.sendVerificationEmail(user.getEmail());
+
+            return ResponseEntity.ok("Verification email sent, please verify your email to complete registration.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+	
+	@PostMapping("/register")
+    public ResponseEntity<?> verifyEmail(@RequestBody EmailVerificationRequest emailVerificationRequest) {
+        try {
+            // 2. 이메일 인증 코드 검증
+            boolean isValid = emailVerificationService.verifyToken(emailVerificationRequest.getEmail(), emailVerificationRequest.getToken());
+            if (isValid) {
+                // 3. 사용자 등록
+                Users newUser = userService.registerUser(emailVerificationRequest.getUser());
+                return ResponseEntity.ok(newUser);
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid verification code.");
+            }
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
-    // Login endpoint
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody UserDto userDto) {
+    public ResponseEntity<?> loginUser(@RequestBody Users user) {
         try {
-            String token = userService.authenticateUser(userDto);
+        	// 사용자 인증
+            String token = userService.authenticateUser(user); // JWT 토큰 생성
+            
+            // 토큰 반환
             return ResponseEntity.ok(new ResponseDto(token));  // Return JWT token
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
     }
-    
+       
     @PostMapping("/logout")
     public ResponseEntity<?> logout() {
         // 클라이언트 측에서 토큰 삭제 유도 (서버는 처리할 필요 없음)
@@ -52,9 +83,9 @@ public class UserController {
     }
     
     @PutMapping("/profile")
-    public ResponseEntity<?> updateProfile(@RequestBody UserDto userDto, Authentication authentication) {
+    public ResponseEntity<?> updateProfile(@RequestBody Users userDto, Authentication authentication) {
     	String currentUsername = authentication.getName();
-    	User user = userService.updateUserProfile(currentUsername, userDto);
+    	Users user = userService.updateUserProfile(currentUsername, userDto);
     	
     	return ResponseEntity.ok("Profile updated successfully");
     }
