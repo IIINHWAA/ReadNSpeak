@@ -16,9 +16,11 @@ public class ReadNSpeakApplication {
         // .env 파일에서 값을 가져와 시스템 속성으로 설정
         String dbUrl = dotenv.get("DATABASE_URL");
         String dbPassword = dotenv.get("DATABASE_PASSWORD");
+        String emailpassword = dotenv.get("EMAIL_PASSWORD");
 
         System.setProperty("DATABASE_URL", dbUrl);
         System.setProperty("DATABASE_PASSWORD", dbPassword);
+        System.setProperty("EMAIL_PASSWORD", emailpassword);
 
         // Spring Boot 애플리케이션 실행
         SpringApplication.run(ReadNSpeakApplication.class, args);
