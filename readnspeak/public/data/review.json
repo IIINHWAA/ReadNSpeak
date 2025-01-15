@@ -1,0 +1,47 @@
+[
+  {
+    "review_id" : 0,
+    "user_id": 0,
+    "book_id" : 0,
+    "content" : "짱 재밌었다",
+    "rating" : 4,
+    "is_spoiler" : false,
+    "helpful_count" : 2,
+    "created_at" : "2025-01-14",
+    "updated_at" : "2025-01-14"
+  },
+  {
+    "review_id" : 1,
+    "user_id": 1,
+    "book_id" : 0,
+    "content" : "책을 읽으면서 느낀 점은, 광주민주화운동이라는 역사적 사건을 다룬 많은 작품들 중에서도 **『소년이 온다』**가 특히 감정적으로 깊이가 있다는 것입니다. 한강은 등장인물들의 내면을 세심하게 그려내며, 그들이 겪는 고통과 슬픔을 독자에게 고스란히 전달합니다. 그 고통이 어디서 비롯되는지, 왜 그들이 그 고통을 참아야만 했는지를 생각하게 만들고, 결국 잊지 말아야 한다는 중요한 메시지를 남깁니다. 이 책은 고통과 기억, 그리고 치유의 이야기를 다루고 있습니다. 하지만 그 치유는 결코 쉽지 않습니다. 피해자의 고통이 후세대에 어떻게 전달되고, 그 후세대가 그 고통을 어떻게 받아들이고 살아가야 하는지에 대한 물음을 던집니다. 한강은 과거의 상처를 치유하기 위해서는 기억해야 한다는 중요한 교훈을 주고 있습니다.",
+    "rating" : 4,
+    "is_spoiler" : false,
+    "helpful_count" : 2,
+    "created_at" : "2025-01-14",
+    "updated_at" : "2025-01-14"
+  },
+  {
+    "review_id" : 2,
+    "user_id": 2,
+    "book_id" : 0,
+    "content" : "짱 재밌었다22222",
+    "rating" : 4,
+    "is_spoiler" : false,
+    "helpful_count" : 2,
+    "created_at" : "2025-01-14",
+    "updated_at" : "2025-01-14"
+  },
+  {
+    "review_id" : 3,
+    "user_id": 3,
+    "book_id" : 0,
+    "content" : "짱 재밌었다222222222",
+    "rating" : 4,
+    "is_spoiler" : false,
+    "helpful_count" : 2,
+    "created_at" : "2025-01-14",
+    "updated_at" : "2025-01-14"
+  }
+]
+
