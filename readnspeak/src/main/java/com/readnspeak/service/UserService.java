@@ -33,6 +33,7 @@ public class UserService {
         // Hash the password using BCrypt
         newUser.setPassword_hash(passwordEncoder.encode(user.getPassword_hash()));
         newUser.setEmail(user.getEmail());
+        newUser.setVerified(true);
 
         // Save the user to the database
         return userRepository.save(newUser);
