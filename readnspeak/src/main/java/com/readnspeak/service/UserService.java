@@ -1,10 +1,11 @@
 package com.readnspeak.service;
 
-import com.readnspeak.dto.LoginDto;
-import com.readnspeak.dto.UserDto;
-import com.readnspeak.entity.User;
+import com.readnspeak.JwtUtil.JwtUtility;
+import com.readnspeak.entity.Users;
 import com.readnspeak.repository.UserRepository;
-import com.readnspeak.security.JWTUtility;
+
+import lombok.AllArgsConstructor;
+import net.bytebuddy.asm.Advice.Exit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -13,56 +14,58 @@ import org.springframework.security.web.authentication.ott.GenerateOneTimeTokenF
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JWTUtility jwtUtility;
+    private final JwtUtility jwtUtility;
 
-    @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, JWTUtility jwtUtility) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtUtility = jwtUtility;
+    public Users registerUser(Users user) {
+        // Check if the username already exists
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new IllegalArgumentException("Already exist");
+        }
+
+        // Create a new User entity
+        Users newUser = new Users();
+        newUser.setUsername(user.getUsername());
+        // Hash the password using BCrypt
+        newUser.setPassword_hash(passwordEncoder.encode(user.getPassword_hash()));
+        newUser.setEmail(user.getEmail());
+
+        // Save the user to the database
+        return userRepository.save(newUser);
     }
 
-    public User registerUser(UserDto userDto) {
-        // 검증
-        validateUser(userDto);
-
-        // 비밀번호 해싱
-        String encodedPassword = passwordEncoder.encode(userDto.getPassword());
-
-        // User 객체 생성 및 저장
-        User user = new User();
-        user.setUsername(userDto.getUsername());
-        user.setEmail(userDto.getEmail());
-        user.setPassword_hash(encodedPassword);
-
-        return userRepository.save(user);
-    }
-    
-    public String login(LoginDto loginDto) {
-        User user = userRepository.findByUsername(loginDto.getUsername())
+    public String authenticateUser(Users user) {
+        Users authuser = userRepository.findByUsername(user.getUsername())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid username or password"));
 
-        if (!passwordEncoder.matches(loginDto.getPassword(), user.getPassword_hash())) {
+        if (passwordEncoder.matches(user.getPassword_hash(), authuser.getPassword_hash())) {
+            // Generate and return JWT token if authentication is successful
+            return jwtUtility.generateToken(user);
+        } else {
             throw new IllegalArgumentException("Invalid username or password");
         }
-
-        // JWT 토큰 생성 (예시)
-        return jwtUtility.generateToken(user);
     }
-
-    private void validateUser(UserDto userDto) {
-        if (userRepository.existsByUsername(userDto.getUsername())) {
-            throw new IllegalArgumentException("Username already exists.");
-        }
-        if (userRepository.existsByEmail(userDto.getEmail())) {
-            throw new IllegalArgumentException("Email already exists.");
-        }
-        if (userDto.getPassword().length() < 8) {
-            throw new IllegalArgumentException("Password must be at least 8 characters long.");
-        }
+    
+    public Users updateUserProfile(String username, Users user) {
+    	
+    	Users existinguser = userRepository.findByUsername(username)
+    			.orElseThrow(() -> new IllegalArgumentException(username));
+    	if (user.getUsername() != null) {
+    		existinguser.setUsername(user.getUsername());
+    	}
+    	if (user.getEmail() != null) {
+    		existinguser.setEmail(user.getEmail());
+    	}
+    	if (user.getPassword_hash() != null) {
+    		existinguser.setPassword_hash(user.getPassword_hash());
+    	}
+    	
+    	return userRepository.save(existinguser);
     }
+    
+    
 }
