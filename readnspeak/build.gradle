@@ -18,6 +18,7 @@ repositories {
 }
 
 dependencies {
+	implementation 'net.bytebuddy:byte-buddy:1.12.8'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'io.github.cdimascio:java-dotenv:5.2.2'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
