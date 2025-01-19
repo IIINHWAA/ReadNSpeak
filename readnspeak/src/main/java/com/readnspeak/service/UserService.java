@@ -81,5 +81,17 @@ public class UserService {
     	return userRepository.save(existinguser);
     }
     
+    public void logoutdeleterefresh(String username) {
+    	try {
+            jwtUtility.deleteRefreshToken(username);
+        } catch (IllegalStateException e) {
+            // Redis에서 refresh token 삭제 실패 시 예외 처리
+            throw new IllegalStateException("Failed to delete refresh token for user: " + username, e);
+        } catch (Exception e) {
+            // 그 외의 예외 처리
+            throw new RuntimeException("Unexpected error occurred during logout for user: " + username, e);
+        }
+    }
+    
     
 }

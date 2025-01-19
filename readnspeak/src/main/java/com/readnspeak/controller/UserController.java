@@ -80,9 +80,16 @@ public class UserController {
     }
        
     @PostMapping("/logout")
-    public ResponseEntity<?> logout() {
-        // 클라이언트 측에서 토큰 삭제 유도 (서버는 처리할 필요 없음)
-        return ResponseEntity.ok("Logged out successfully");
+    public ResponseEntity<?> logout(Authentication authentication) {
+    	try {
+            // 로그아웃 처리 및 Refresh Token 삭제
+            userService.logoutdeleterefresh(authentication.getName());
+            return ResponseEntity.ok("Logout successful");
+        } catch (Exception e) {
+            // 그 외의 예외 처리
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An unexpected error occurred: " + e.getMessage());
+        }
     }
     
     @PutMapping("/profile")

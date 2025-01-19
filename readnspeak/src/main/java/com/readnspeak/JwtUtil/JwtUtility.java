@@ -144,6 +144,13 @@ public class JwtUtility {
     
  // Refresh Token 삭제 (로그아웃 시 사용)
     public void deleteRefreshToken(String username) {
-        redisTemplate.delete(username);
+    	try {
+            redisTemplate.delete(username);
+        } catch (Exception e) {
+            // Redis 연결 문제 등 예외를 처리
+            throw new IllegalStateException("Failed to delete refresh token for user: " + username, e);
+        }
     }
+    
+    
 }
