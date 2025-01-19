@@ -1,11 +1,16 @@
 package com.readnspeak.service;
 
 import com.readnspeak.JwtUtil.JwtUtility;
+import com.readnspeak.dto.LoginDto;
+import com.readnspeak.dto.updateDto;
 import com.readnspeak.entity.Users;
 import com.readnspeak.repository.UserRepository;
 
 import lombok.AllArgsConstructor;
 import net.bytebuddy.asm.Advice.Exit;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -39,19 +44,27 @@ public class UserService {
         return userRepository.save(newUser);
     }
 
-    public String authenticateUser(Users user) {
-        Users authuser = userRepository.findByUsername(user.getUsername())
+    public Map<String, String> authenticateUser(LoginDto logindto) {
+        Users authuser = userRepository.findByUsername(logindto.getUsername())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid username or password"));
 
-        if (passwordEncoder.matches(user.getPassword_hash(), authuser.getPassword_hash())) {
-            // Generate and return JWT token if authentication is successful
-            return jwtUtility.generateToken(user);
+        if (passwordEncoder.matches(logindto.getPassword_hash(), authuser.getPassword_hash())) {
+        	// Generate JWT access token and refresh token
+        	String accessToken = jwtUtility.generateToken(authuser);
+            String refreshToken = jwtUtility.generateRefreshToken(authuser); // Generate refresh token
+            
+            // Create a map to return both tokens
+            Map<String, String> tokens = new HashMap<>();
+            tokens.put("accessToken", accessToken);
+            tokens.put("refreshToken", refreshToken);
+            
+            return tokens; // Return both tokens
         } else {
             throw new IllegalArgumentException("Invalid username or password");
         }
     }
     
-    public Users updateUserProfile(String username, Users user) {
+    public Users updateUserProfile(String username, updateDto user) {
     	
     	Users existinguser = userRepository.findByUsername(username)
     			.orElseThrow(() -> new IllegalArgumentException(username));

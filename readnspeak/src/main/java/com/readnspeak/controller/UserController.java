@@ -1,7 +1,9 @@
 package com.readnspeak.controller;
 
 import com.readnspeak.JwtUtil.JwtUtility;
+import com.readnspeak.dto.LoginDto;
 import com.readnspeak.dto.ResponseDto;
+import com.readnspeak.dto.updateDto;
 import com.readnspeak.entity.EmailVerificationRequest;
 import com.readnspeak.entity.EmailVerificationToken;
 import com.readnspeak.entity.Users;
@@ -10,6 +12,7 @@ import com.readnspeak.service.EmailVerificationService;
 import com.readnspeak.service.UserService;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,13 +67,13 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody Users user) {
+    public ResponseEntity<?> loginUser(@RequestBody LoginDto logindto) {
         try {
         	// 사용자 인증
-            String token = userService.authenticateUser(user); // JWT 토큰 생성
+        	Map<String, String> tokens = userService.authenticateUser(logindto); //토큰 생성
             
             // 토큰 반환
-            return ResponseEntity.ok(new ResponseDto(token));  // Return JWT token
+        	return ResponseEntity.ok(new ResponseDto(tokens));  // Return both accessToken and refreshToken
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
@@ -83,10 +86,12 @@ public class UserController {
     }
     
     @PutMapping("/profile")
-    public ResponseEntity<?> updateProfile(@RequestBody Users userDto, Authentication authentication) {
+    public ResponseEntity<?> updateProfile(@RequestBody updateDto userDto, Authentication authentication) {
     	String currentUsername = authentication.getName();
     	Users user = userService.updateUserProfile(currentUsername, userDto);
     	
     	return ResponseEntity.ok("Profile updated successfully");
     }
+    
+    
 }
