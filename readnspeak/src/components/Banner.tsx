@@ -1,27 +1,25 @@
 'use client' // 클라이언트 전용 컴포넌트임을 명시
 import React, { useState, useEffect } from 'react'
 import { FaAngleLeft, FaAngleRight } from 'react-icons/fa'
+import Image from 'next/image'
 
 const carouselImages = [
   {
     //일단 무료 이미지 사용
     id: 0,
-    img_url:
-      'https://images.unsplash.com/photo-1457369804613-52c61a468e7d?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    img_url: '/img/FE_po.png',
     img_name: '이미지1',
     src: 'https://iiinhwaa.github.io/',
   },
   {
     id: 1,
-    img_url:
-      'https://images.unsplash.com/photo-1414124488080-0188dcbb8834?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    img_url: '/img/FE_po.png',
     img_name: '이미지2',
     src: '/',
   },
   {
     id: 2,
-    img_url:
-      'https://images.unsplash.com/photo-1506962240359-bd03fbba0e3d?q=80&w=1730&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    img_url: '/img/FE_po.png',
     img_name: '이미지3',
     src: '/',
   },
@@ -73,9 +71,12 @@ export default function EventBanner() {
               style={{ flexShrink: 0 }}
             >
               <a href={img.src} className="w-full h-full">
-                <img
+                <Image
                   src={img.img_url}
                   alt={img.img_name}
+                  width={1740} 
+                height={1000} 
+                layout="responsive" 
                   className="w-full h-[500px] rounded-lg"
                 />
               </a>

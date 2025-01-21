@@ -7,7 +7,7 @@ build/
 
 # node_modules 폴더 무시
 node_modules/
-
+.next
 ### STS ###
 .apt_generated
 .classpath

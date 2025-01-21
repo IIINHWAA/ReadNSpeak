@@ -1,0 +1,52 @@
+[
+  {
+    "user_id": 0,
+    "username" : "inamon",
+    "email" : "dlsghk0711@naver.com",
+    "password_hash" : "zxcvb",
+    "profile_picture" : "/",
+    "bio" : "",
+    "last_login" : "",
+    "role":"",
+    "created_at":"2025-01-14"
+  },
+
+  {
+    "user_id": 1,
+    "username" : "inamon2",
+    "email" : "dlsghk0711@naver.com",
+    "password_hash" : "zxcvb",
+    "profile_picture" : "/",
+    "bio" : "",
+    "last_login" : "",
+    "role":"",
+    "created_at":"2025-01-14"
+  },
+
+  {
+    "user_id": 2,
+    "username" : "inamon3",
+    "email" : "dlsghk0711@naver.com",
+    "password_hash" : "zxcvb",
+    "profile_picture" : "/",
+    "bio" : "",
+    "last_login" : "",
+    "role":"",
+    "created_at":"2025-01-14"
+  },
+
+  {
+    "user_id": 3,
+    "username" : "inamon4",
+    "email" : "dlsghk0711@naver.com",
+    "password_hash" : "zxcvb",
+    "profile_picture" : "/",
+    "bio" : "",
+    "last_login" : "",
+    "role":"",
+    "created_at":"2025-01-14"
+  }
+
+
+]
+
