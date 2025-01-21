@@ -4,37 +4,33 @@ import com.readnspeak.entity.EmailVerificationToken;
 import com.readnspeak.repository.EmailVerificationTokenRepository;
 import com.readnspeak.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class EmailVerificationService {
 
-    private final JavaMailSender emailSender;
-    private final EmailVerificationTokenRepository tokenRepository;
-    private final UserRepository userRepository;
+	private final JavaMailSender emailSender;
+    private final StringRedisTemplate redisTemplate;
 
     @Autowired
-    public EmailVerificationService(JavaMailSender emailSender,
-                                    EmailVerificationTokenRepository tokenRepository,
-                                    UserRepository userRepository) {
+    public EmailVerificationService(JavaMailSender emailSender, StringRedisTemplate redisTemplate) {
         this.emailSender = emailSender;
-        this.tokenRepository = tokenRepository;
-        this.userRepository = userRepository;
+        this.redisTemplate = redisTemplate;
     }
 
     // 이메일 인증 토큰 생성 및 발송
     public void sendVerificationEmail(String email) {
-        String token = generateVerificationToken();
-        EmailVerificationToken verificationToken = new EmailVerificationToken();
-        verificationToken.setEmail(email);
-        verificationToken.setToken(token);
-        verificationToken.setExpiryDate(LocalDateTime.now().plusMinutes(15)); // 토큰 만료 시간 설정
-        tokenRepository.save(verificationToken);
+    	String token = generateVerificationToken();
+
+        // Redis에 인증 토큰 저장 (TTL 15분 설정)
+        redisTemplate.opsForValue().set(email, token, 15, TimeUnit.MINUTES);
 
         sendEmail(email, token);
     }
@@ -51,17 +47,16 @@ public class EmailVerificationService {
         message.setText("Your verification code is: " + token);
         emailSender.send(message);
     }
-
-    // 인증 코드 검증
+    
     public boolean verifyToken(String email, String token) {
-        EmailVerificationToken verificationToken = tokenRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("Verification token not found"));
-        
-        if (verificationToken.getExpiryDate().isBefore(LocalDateTime.now())) {
-        	tokenRepository.delete(verificationToken);
-            throw new IllegalArgumentException("Token has expired");
+        String storedToken = redisTemplate.opsForValue().get(email);
+
+        if (storedToken == null) {
+            throw new IllegalArgumentException("Verification token not found or expired");
         }
-        System.out.println(verificationToken.getToken().equals(token));
-        return verificationToken.getToken().equals(token);
+
+        return storedToken.equals(token);
     }
+    
+    
 }

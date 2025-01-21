@@ -1,7 +1,9 @@
 package com.readnspeak.controller;
 
 import com.readnspeak.JwtUtil.JwtUtility;
+import com.readnspeak.dto.LoginDto;
 import com.readnspeak.dto.ResponseDto;
+import com.readnspeak.dto.updateDto;
 import com.readnspeak.entity.EmailVerificationRequest;
 import com.readnspeak.entity.EmailVerificationToken;
 import com.readnspeak.entity.Users;
@@ -10,6 +12,7 @@ import com.readnspeak.service.EmailVerificationService;
 import com.readnspeak.service.UserService;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,29 +67,38 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody Users user) {
+    public ResponseEntity<?> loginUser(@RequestBody LoginDto logindto) {
         try {
         	// 사용자 인증
-            String token = userService.authenticateUser(user); // JWT 토큰 생성
+        	Map<String, String> tokens = userService.authenticateUser(logindto); //토큰 생성
             
             // 토큰 반환
-            return ResponseEntity.ok(new ResponseDto(token));  // Return JWT token
+        	return ResponseEntity.ok(new ResponseDto(tokens));  // Return both accessToken and refreshToken
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
     }
        
     @PostMapping("/logout")
-    public ResponseEntity<?> logout() {
-        // 클라이언트 측에서 토큰 삭제 유도 (서버는 처리할 필요 없음)
-        return ResponseEntity.ok("Logged out successfully");
+    public ResponseEntity<?> logout(Authentication authentication) {
+    	try {
+            // 로그아웃 처리 및 Refresh Token 삭제
+            userService.logoutdeleterefresh(authentication.getName());
+            return ResponseEntity.ok("Logout successful");
+        } catch (Exception e) {
+            // 그 외의 예외 처리
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An unexpected error occurred: " + e.getMessage());
+        }
     }
     
     @PutMapping("/profile")
-    public ResponseEntity<?> updateProfile(@RequestBody Users userDto, Authentication authentication) {
+    public ResponseEntity<?> updateProfile(@RequestBody updateDto userDto, Authentication authentication) {
     	String currentUsername = authentication.getName();
     	Users user = userService.updateUserProfile(currentUsername, userDto);
     	
     	return ResponseEntity.ok("Profile updated successfully");
     }
+    
+    
 }
