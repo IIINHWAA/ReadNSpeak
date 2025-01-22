@@ -4,14 +4,23 @@ import { Review } from '@/types';
 import { User } from '@/types';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 interface ReviewUserListProps {
   id: number; 
 }
 
+
 const ReviewUserList = ({ id }: ReviewUserListProps) => {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [users, setUsers] = useState<User[]>([]);
+
+  
+  const router = useRouter()
+  const handleJoinBtn = () => {
+    router.push('/add-review');
+  };
+
 
   const fetchReviews = async () => {
     const res = await fetch('/data/review.json');
@@ -40,12 +49,12 @@ const ReviewUserList = ({ id }: ReviewUserListProps) => {
     <div>
       <div className="flex flex-row items-center justify-between">
         <p className="font-bold text-xl">독후평을 남긴 사람들</p>
-        <button className="bg-gray-300 text-white rounded-lg px-4 py-2">독후평 등록</button>
+        <button className="bg-gray-300 text-white rounded-lg px-4 py-2" onClick={handleJoinBtn}>독후평 등록</button>
       </div>
 
       <div className="grid grid-cols-4 gap-4 mt-4">
         {reviews.length === 0 ? (
-          <p>이 책에 대한 리뷰가 없습니다.</p>
+          <p>리뷰가 없습니다.</p>
         ) : (
           reviews.map((review) => (
             <div key={review.user_id} className="flex flex-col items-center mt-10">
@@ -67,5 +76,4 @@ const ReviewUserList = ({ id }: ReviewUserListProps) => {
     </div>
   );
 };
-
 export default ReviewUserList;

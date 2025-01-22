@@ -37,3 +37,35 @@ export interface User {
   role: string;
   created_at: string;
 }
+
+export interface Comment {
+  comment_id: number;
+  review_id: number;
+  user_id: number;
+  content: string;
+  reply_to: number | null;
+  is_flagged: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Like {
+  like_id: number;
+  user_id: number;
+  review_id: number;
+  reaction_time: string;
+}
+
+export interface Bookmark {
+  bookmark_id: number;
+  user_id: number;
+  book_id: number;
+  created_at: string;
+}
+
+export interface Follow {
+  follow_id: number;
+  follower_id: number;
+  following_id: number;
+  created_at: string;
+}
