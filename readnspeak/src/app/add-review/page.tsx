@@ -3,10 +3,12 @@
 import { useState } from 'react';
 import EmojiPicker from 'emoji-picker-react';
 import { FiSmile } from 'react-icons/fi';
+import { useRouter } from 'next/navigation';
 
 const AddReviewPage = () => {
   const [chosenEmoji, setChosenEmoji] = useState<string | null>(null); 
   const [showPicker, setShowPicker] = useState<boolean>(false); 
+  const router = useRouter();
 
   const handleEmojiClick = (emojiObject: { emoji: string }) => {
     setChosenEmoji(emojiObject.emoji); 
@@ -16,6 +18,10 @@ const AddReviewPage = () => {
   const togglePicker = () => {
     setShowPicker(!showPicker); 
   };
+
+  const handleBackBtn = () => {
+    router.back();
+  }
 
   return (
     <div className="w-4/5 mx-auto bg-gray-100 shadow-xl p-5 rounded-md mt-10 ">
@@ -51,7 +57,7 @@ const AddReviewPage = () => {
       </div>
 
       <div className='flex flex-row gap-4 items-center justify-end mr-1 mt-4'>
-        <button className='px-4 py-1 rounded-md shadow-lg bg-white'>취소</button>
+        <button onClick={handleBackBtn} className='px-4 py-1 rounded-md shadow-lg bg-white'>취소</button>
         <button className='px-4 py-1 rounded-md shadow-lg bg-blue-200'>작성</button>
       </div>
     </div>
