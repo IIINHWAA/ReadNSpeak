@@ -1,0 +1,152 @@
+[
+  {
+    "comment_id": 1,
+    "review_id": 0,
+    "user_id": 0,
+    "content": "이 책 정말 유익했어요! 강력히 추천합니다.",
+    "reply_to": null,
+    "is_flagged": false,
+    "created_at": "2025-01-21T08:30:00Z",
+    "updated_at": "2025-01-21T08:30:00Z"
+  },
+  {
+    "comment_id": 2,
+    "review_id": 1,
+    "user_id": 1,
+    "content": "저도 이 책 읽었는데, 생각보다 재미있네요.",
+    "reply_to": 1,
+    "is_flagged": false,
+    "created_at": "2025-01-21T09:00:00Z",
+    "updated_at": "2025-01-21T09:00:00Z"
+  },
+  {
+    "comment_id": 3,
+    "review_id": 2,
+    "user_id": 2,
+    "content": "책 내용이 너무 지루하고 길어요. 기대 이하였습니다.",
+    "reply_to": null,
+    "is_flagged": true,
+    "created_at": "2025-01-20T14:15:00Z",
+    "updated_at": "2025-01-20T14:15:00Z"
+  },
+  {
+    "comment_id": 4,
+    "review_id": 3,
+    "user_id": 3,
+    "content": "단순한 내용일 수도 있지만, 여운이 오래가네요.",
+    "reply_to": null,
+    "is_flagged": false,
+    "created_at": "2025-01-19T18:45:00Z",
+    "updated_at": "2025-01-19T18:45:00Z"
+  },
+  {
+    "comment_id": 5,
+    "review_id": 4,
+    "user_id": 4,
+    "content": "이 책은 너무 어려워서 잘 이해하지 못했어요.",
+    "reply_to": 1,
+    "is_flagged": false,
+    "created_at": "2025-01-21T11:00:00Z",
+    "updated_at": "2025-01-21T11:00:00Z"
+  },
+  {
+    "comment_id": 6,
+    "review_id": 5,
+    "user_id": 5,
+    "content": "좋은 책이었으나, 결말이 조금 아쉬웠어요.",
+    "reply_to": null,
+    "is_flagged": false,
+    "created_at": "2025-01-22T10:20:00Z",
+    "updated_at": "2025-01-22T10:20:00Z"
+  },
+  {
+    "comment_id": 7,
+    "review_id": 6,
+    "user_id": 6,
+    "content": "강력 추천하는 책입니다! 모든 사람이 읽어봐야 해요.",
+    "reply_to": null,
+    "is_flagged": false,
+    "created_at": "2025-01-21T12:30:00Z",
+    "updated_at": "2025-01-21T12:30:00Z"
+  },
+  {
+    "comment_id": 8,
+    "review_id": 7,
+    "user_id": 7,
+    "content": "내용이 너무 반복적이었어요. 다시 읽고 싶지 않네요.",
+    "reply_to": null,
+    "is_flagged": false,
+    "created_at": "2025-01-18T16:50:00Z",
+    "updated_at": "2025-01-18T16:50:00Z"
+  },
+  {
+    "comment_id": 9,
+    "review_id": 8,
+    "user_id": 8,
+    "content": "저는 이 책의 스타일이 마음에 들었어요.",
+    "reply_to": 3,
+    "is_flagged": false,
+    "created_at": "2025-01-20T15:00:00Z",
+    "updated_at": "2025-01-20T15:00:00Z"
+  },
+  {
+    "comment_id": 10,
+    "review_id": 9,
+    "user_id": 9,
+    "content": "진짜 감동적인 책이에요. 추천드립니다!",
+    "reply_to": null,
+    "is_flagged": false,
+    "created_at": "2025-01-22T13:00:00Z",
+    "updated_at": "2025-01-22T13:00:00Z"
+  },
+  {
+    "comment_id": 11,
+    "review_id": 10,
+    "user_id": 10,
+    "content": "정말 인상 깊었던 책입니다. 꼭 읽어보세요!",
+    "reply_to": null,
+    "is_flagged": false,
+    "created_at": "2025-01-23T14:00:00Z",
+    "updated_at": "2025-01-23T14:00:00Z"
+  },
+  {
+    "comment_id": 12,
+    "review_id": 11,
+    "user_id": 0,
+    "content": "이 책은 다소 어려운 내용이었지만, 흥미로웠어요.",
+    "reply_to": null,
+    "is_flagged": false,
+    "created_at": "2025-01-22T15:00:00Z",
+    "updated_at": "2025-01-22T15:00:00Z"
+  },
+  {
+    "comment_id": 13,
+    "review_id": 12,
+    "user_id": 1,
+    "content": "읽으면서 많은 생각이 들었어요. 깊이가 있습니다.",
+    "reply_to": null,
+    "is_flagged": false,
+    "created_at": "2025-01-23T16:00:00Z",
+    "updated_at": "2025-01-23T16:00:00Z"
+  },
+  {
+    "comment_id": 14,
+    "review_id": 13,
+    "user_id": 2,
+    "content": "이 책은 너무 단순하게 느껴졌어요. 기대 이하였습니다.",
+    "reply_to": 3,
+    "is_flagged": true,
+    "created_at": "2025-01-23T17:00:00Z",
+    "updated_at": "2025-01-23T17:00:00Z"
+  },
+  {
+    "comment_id": 15,
+    "review_id": 14,
+    "user_id": 3,
+    "content": "훌륭한 책이었지만, 결말이 아쉬웠어요.",
+    "reply_to": null,
+    "is_flagged": false,
+    "created_at": "2025-01-23T18:00:00Z",
+    "updated_at": "2025-01-23T18:00:00Z"
+  }
+]

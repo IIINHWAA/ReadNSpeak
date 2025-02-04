@@ -1,0 +1,62 @@
+[
+  {
+    "bookmark_id": 1,
+    "user_id": 0,
+    "book_id": 0,
+    "created_at": "2025-01-21T08:30:00Z"
+  },
+  {
+    "bookmark_id": 2,
+    "user_id": 1,
+    "book_id": 1,
+    "created_at": "2025-01-21T09:00:00Z"
+  },
+  {
+    "bookmark_id": 3,
+    "user_id": 2,
+    "book_id": 2,
+    "created_at": "2025-01-20T14:15:00Z"
+  },
+  {
+    "bookmark_id": 4,
+    "user_id": 3,
+    "book_id": 3,
+    "created_at": "2025-01-19T18:45:00Z"
+  },
+  {
+    "bookmark_id": 5,
+    "user_id": 4,
+    "book_id": 4,
+    "created_at": "2025-01-21T11:00:00Z"
+  },
+  {
+    "bookmark_id": 6,
+    "user_id": 5,
+    "book_id": 5,
+    "created_at": "2025-01-22T10:20:00Z"
+  },
+  {
+    "bookmark_id": 7,
+    "user_id": 6,
+    "book_id": 6,
+    "created_at": "2025-01-21T12:30:00Z"
+  },
+  {
+    "bookmark_id": 8,
+    "user_id": 7,
+    "book_id": 7,
+    "created_at": "2025-01-18T16:50:00Z"
+  },
+  {
+    "bookmark_id": 9,
+    "user_id": 8,
+    "book_id": 8,
+    "created_at": "2025-01-20T15:00:00Z"
+  },
+  {
+    "bookmark_id": 10,
+    "user_id": 9,
+    "book_id": 9,
+    "created_at": "2025-01-22T13:00:00Z"
+  }
+]
