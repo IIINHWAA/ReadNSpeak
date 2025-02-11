@@ -33,14 +33,14 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
         	.csrf().disable()
-            // Add the JWT filter before the default UsernamePasswordAuthenticationFilter
             .addFilterBefore(new JwtAuthenticationFilter(jwtUtility), UsernamePasswordAuthenticationFilter.class)
-
-            // Use lambda-style configuration for authorization
             .authorizeHttpRequests(authorizeRequests ->
                 authorizeRequests
-                    .requestMatchers("/api/user/profile").authenticated() // Protect profile update
-                    .anyRequest().permitAll() // Allow other requests without authentication
+                	.requestMatchers("/api/user/updateprofile", 
+                			"/api/user/delete",
+                			"/api/user/readprofile")
+                	.authenticated()
+                    .anyRequest().permitAll() 
             );
 
         return http.build();

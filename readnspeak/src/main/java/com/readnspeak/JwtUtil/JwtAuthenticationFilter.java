@@ -20,32 +20,36 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private JwtUtility jwtUtility;
+    private final JwtUtility jwtUtility;
 
     public JwtAuthenticationFilter(JwtUtility jwtUtility) {
         this.jwtUtility = jwtUtility;
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) 
+            throws ServletException, IOException {
+        
         String token = getTokenFromRequest(request);
         
-        if (token != null && jwtUtility.validateToken(token, jwtUtility.extractUsername(token))) {
-        	String role = jwtUtility.extractClaims(token).get("role",String.class);
-            List <GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(role));
-            
-            UsernamePasswordAuthenticationToken authentication = 
-            		new UsernamePasswordAuthenticationToken(jwtUtility.extractUsername(token), null, authorities); // ArrayList -> 후에 권한 설정
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        if (token != null) {
+            String username = jwtUtility.extractUsername(token);
+            if (jwtUtility.validateToken(token, username)) {
+                String role = jwtUtility.extractRole(token);
+                List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(role));
+
+                UsernamePasswordAuthenticationToken authentication = 
+                    new UsernamePasswordAuthenticationToken(username, null, authorities);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
         }
+
         filterChain.doFilter(request, response);
     }
 
+    /** ✅ Request에서 Bearer 토큰 추출 */
     private String getTokenFromRequest(HttpServletRequest request) {
         String header = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (header != null && header.startsWith("Bearer ")) {
-            return header.substring(7);
-        }
-        return null;
+        return (header != null && header.startsWith("Bearer ")) ? header.substring(7) : null;
     }
 }
