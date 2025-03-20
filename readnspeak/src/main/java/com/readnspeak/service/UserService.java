@@ -1,6 +1,7 @@
 package com.readnspeak.service;
 
 import com.readnspeak.JwtUtil.JwtUtility;
+import com.readnspeak.dto.EmailVerificationRequestDTO;
 import com.readnspeak.dto.LoginDto;
 import com.readnspeak.dto.updateDto;
 import com.readnspeak.entity.Users;
@@ -26,12 +27,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtUtility jwtUtility;
 
-    public Users registerUser(Users user) {
-        // Check if the username already exists
-        if (userRepository.existsByEmail(user.getEmail())) {
-            throw new IllegalArgumentException("Already exist");
-        }
-
+    public Users registerUser(EmailVerificationRequestDTO user) {
         // Create a new User entity
         Users newUser = new Users();
         newUser.setUsername(user.getUsername());
@@ -92,6 +88,23 @@ public class UserService {
             throw new RuntimeException("Unexpected error occurred during logout for user: " + username, e);
         }
     }
+
+	public void deleteUser(String username, String password) {
+		Users user = userRepository.findByUsername(username)
+	            .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+	    // 비밀번호 확인
+	    if (!passwordEncoder.matches(password, user.getPassword_hash())) {
+	        throw new IllegalArgumentException("Incorrect password");
+	    }
+
+	    // 사용자 삭제
+	    userRepository.delete(user);
+	}
+
+	public Users getUserByUsername(String username) {
+		return userRepository.findByUsername(username).orElse(null);
+	}
     
     
 }
